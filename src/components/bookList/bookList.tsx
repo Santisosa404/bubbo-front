@@ -1,22 +1,24 @@
 // ListaLibros.tsx
 import React from 'react';
 import { TouchableOpacity, Text, View, StyleSheet, ScrollView } from 'react-native';
-import { Book } from '../models/book';
+import { Book } from '../../models/book';
+import { Icon } from '@rneui/themed';
 
 interface BookListProps {
   books: Book[];
-  onLibroClick: (id: string) => void;
+  onBookDetailClick: (id: string) => void;
+  handleNewBook: () => void;
 };
 
-const BookList: React.FC<BookListProps> = ({ books: booksList, onLibroClick }) => {
-  
+const BookList: React.FC<BookListProps> = ({ books: booksList, onBookDetailClick, handleNewBook }) => {
+
   return (
-    <View style={styles.listaContainer} key={'view-parent-list'}>
+    <View style={styles.containerList} key={'view-parent-list'}>
       <ScrollView key={'scrollView-list'}>
-        {booksList.map((book : Book, index: number) => {
+        {booksList.map((book: Book, index: number) => {
           return (
             <View style={styles.fileContainer} key={`book-container-${book.id}`}>
-              <TouchableOpacity style={styles.bookContainer} activeOpacity={0.7} onPress={() => onLibroClick(book.id)} key={`view-${book.id}-${index}`}>
+              <TouchableOpacity style={styles.bookContainer} activeOpacity={0.7} onPress={() => onBookDetailClick(book.id)} key={`view-${book.id}-${index}`}>
                 <Text style={styles.bookTitle} key={'book-name'}>{book.name}</Text>
                 <Text style={styles.bookAuthor} key={'book-author'}>{book.author}</Text>
               </TouchableOpacity>
@@ -24,12 +26,21 @@ const BookList: React.FC<BookListProps> = ({ books: booksList, onLibroClick }) =
           );
         })}
       </ScrollView>
+      <TouchableOpacity style={styles.floatingButton}>
+      <Icon
+        raised
+        name='plus'
+        type='font-awesome'
+        onPress={() => handleNewBook()} />
+      </TouchableOpacity>
+
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
-  listaContainer: {
+  containerList: {
     padding: 16,
     backgroundColor: 'D6EADC'
   },
@@ -68,6 +79,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 8,
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
